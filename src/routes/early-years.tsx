@@ -12,9 +12,9 @@ import { Card, Heading, MobileBar, SiteFooter, SiteHeader, Underline, inputCls, 
 export const Route = createFileRoute("/early-years")({
   head: () => ({
     meta: [
-      { title: "Early Years (Ages 2–6) | Ekaaya International School Vadodara" },
+      { title: "Early Years (Ages 3–6) | Ekaaya International School Vadodara" },
       { name: "description", content: "Play-based inquiry under the Amra canopy, a gentle home-to-school transition and dedicated caretaker attention for toddlers, nursery and kindergarten." },
-      { property: "og:title", content: "Early Years at Ekaaya | Ages 2 to 6" },
+      { property: "og:title", content: "Early Years at Ekaaya | Ages 3 to 6" },
       { property: "og:description", content: "Book an Early Years discovery session." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -59,7 +59,7 @@ function EarlyYears() {
         <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-background/30" />
         <div className="relative mx-auto grid max-w-6xl items-center gap-10 px-5 py-12 md:grid-cols-[1.1fr_1fr] md:py-16">
           <div>
-            <span className="inline-block rounded-md bg-brand-green px-3 py-1 font-serif text-sm text-primary-foreground">Early Years · Ages 2 to 6</span>
+            <span className="inline-block rounded-md bg-brand-green px-3 py-1 font-serif text-sm text-primary-foreground">Early Years · Ages 3 to 6</span>
             <p className="mt-6 font-script text-3xl text-foreground/80">Every child grows differently.</p>
             <h1 className="text-5xl font-bold leading-[1.05] text-brand-brown md:text-6xl">Small steps.<br />Safe hands.</h1>
             <Underline className="w-56" />

@@ -237,7 +237,7 @@ function Index() {
           ].map((p) => (
             <figure key={p.label} className="group">
               <div className="overflow-hidden rounded-b-[999px] rounded-t-xl">
-                <img src={p.img.url} alt={p.label} loading="lazy" className="aspect-[3/4] w-full object-cover object-top transition duration-500 group-hover:scale-105" />
+                <img src={p.img.url} alt={p.label} loading="lazy" className="aspect-[3/4] w-full object-cover object-[center_72%] transition duration-500 group-hover:scale-105" />
               </div>
               <figcaption className="mt-4 text-center">
                 <span className={`inline-block px-3 py-1 text-sm font-medium text-primary-foreground ${p.tone}`}>{p.label}</span>
