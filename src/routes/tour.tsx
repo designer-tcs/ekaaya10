@@ -11,6 +11,7 @@ const conscious = { url: consciousSrc };
 import foundersSrc from "@/assets/tour/tour-founders.jpg";
 const founders = { url: foundersSrc };
 import { ADDRESS, Card, Heading, MAP, MobileBar, PHONE, SiteFooter, SiteHeader, TEL, Underline, inputCls, useLeadSubmit } from "@/components/ekaaya";
+import { ADMISSION_CLASSES } from "@/lib/simply-admission";
 
 export const Route = createFileRoute("/tour")({
   head: () => ({
@@ -26,7 +27,6 @@ export const Route = createFileRoute("/tour")({
   component: TourPage,
 });
 
-const GRADES = ["Nursery", "Jr.KG", "Sr.KG", "Grade 1", "Grade 2", "Grade 3", "Grade 4"];
 const SLOTS = ["9:30 – 10:30 AM", "11:00 AM – 12:00 PM", "3:00 – 4:00 PM"];
 
 function nextDays() {
@@ -47,7 +47,7 @@ function TourForm() {
   const days = useMemo(nextDays, []);
   const [day, setDay] = useState<string | null>(null);
   const [slot, setSlot] = useState<string | null>(null);
-  const { state, submit } = useLeadSubmit("tour", "tour-page");
+  const { state, message, submit } = useLeadSubmit("tour", "tour-page", "Book a Tour");
   const chip = (on: boolean) => `rounded-lg border px-2 py-2 text-xs font-medium transition ${on ? "border-primary bg-primary text-primary-foreground" : "border-input bg-card"}`;
   return (
     <form onSubmit={(e) => submit(e, () => `tour: ${day ?? "any day"} ${slot ?? "any slot"}`)} className="grid gap-3">
@@ -63,15 +63,15 @@ function TourForm() {
       </div>
       <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">3. Your details</p>
       <input name="name" required maxLength={100} placeholder="Parent's name" className={inputCls} />
-      <input name="phone" required type="tel" placeholder="Mobile number" className={inputCls} />
+      <input name="phone" required type="tel" inputMode="numeric" autoComplete="tel" placeholder="10-digit mobile number" className={inputCls} />
       <select name="grade" required defaultValue="" className={inputCls}>
         <option value="" disabled>Admission for</option>
-        {GRADES.map((g) => <option key={g}>{g}</option>)}
+        {ADMISSION_CLASSES.map((g) => <option key={g} value={g}>{g}</option>)}
       </select>
       <button disabled={state === "sending" || !day || !slot} className="rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:opacity-90 disabled:opacity-60">
         {state === "sending" ? "Booking…" : !day || !slot ? "Pick a day & slot" : "Confirm My Campus Tour"}
       </button>
-      {state === "error" && <p className="text-xs text-destructive">Please check your details and try again.</p>}
+      {state === "error" && <p className="text-xs text-destructive">{message}</p>}
       <p className="text-center text-xs text-muted-foreground">Free · 40 minutes · We'll confirm by call</p>
     </form>
   );

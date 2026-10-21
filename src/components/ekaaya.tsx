@@ -1,6 +1,8 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useState, type FormEvent, type ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { isEmail, mapClass, normalizeMobile, readUtm, type CrmSource } from "@/lib/simply-admission";
+import { submitEnquiry } from "@/lib/submit-enquiry";
 import logoSrc from "@/assets/logo.png";
 const logo = { url: logoSrc };
 
@@ -67,30 +69,83 @@ export function SiteFooter() {
   );
 }
 
-/** Saves a lead to the enquiries table, then sends the visitor to /thank-you. */
-export function useLeadSubmit(kind: string | (() => string), source: string) {
+/** Sends the enquiry to Simply Admission, keeps a copy in Supabase, then opens /thank-you. */
+export function useLeadSubmit(kind: string | (() => string), source: string, crmSource: CrmSource | (() => CrmSource)) {
   const navigate = useNavigate();
   const [state, setState] = useState<"idle" | "sending" | "error">("idle");
+  const [message, setMessage] = useState("");
   async function submit(e: FormEvent<HTMLFormElement>, extra?: (f: FormData) => string | null) {
     e.preventDefault();
     const f = new FormData(e.currentTarget);
-    const phone = String(f.get("phone") || "").trim();
-    if (!/^[+\d\s-]{7,20}$/.test(phone)) return setState("error");
-    setState("sending");
+    const rawPhone = String(f.get("phone") || "");
+    const phone = normalizeMobile(rawPhone);
+    if (!phone) {
+      setMessage("Please enter a 10-digit mobile number.");
+      setState("error");
+      return;
+    }
     const email = String(f.get("email") || "").trim();
+    if (email && !isEmail(email)) {
+      setMessage("Please enter a valid email address.");
+      setState("error");
+      return;
+    }
+    const grade = mapClass(String(f.get("grade") || ""));
+    if (!grade) {
+      setMessage("Please choose a class.");
+      setState("error");
+      return;
+    }
+    const name = String(f.get("name") || "").trim().slice(0, 100);
+    if (!name) {
+      setMessage("Please enter your name.");
+      setState("error");
+      return;
+    }
+
+    setState("sending");
+    setMessage("");
     const k = typeof kind === "function" ? kind() : kind;
-    const { error } = await supabase.from("enquiries").insert({
-      kind: k,
-      parent_name: String(f.get("name") || "").trim().slice(0, 100),
-      phone,
-      email: email || null,
-      child_grade: (f.get("grade") as string) || null,
-      message: [`source: ${source}`, extra?.(f)].filter(Boolean).join(" · ").slice(0, 1000),
-    });
-    if (error) return setState("error");
+    const sourceName = typeof crmSource === "function" ? crmSource() : crmSource;
+    const note = [`page: ${source}`, extra?.(f)].filter(Boolean).join(" · ").slice(0, 500);
+
+    const backup = (async () => {
+      try {
+        const { error } = await supabase.from("enquiries").insert({
+          kind: k === "enquiry" ? "enquiry" : "visit",
+          parent_name: name,
+          phone,
+          email: email || null,
+          child_grade: grade,
+          message: note.slice(0, 1000),
+        });
+        if (error) console.error(error);
+      } catch (error) {
+        console.error(error);
+      }
+    })();
+
+    try {
+      const crm = await submitEnquiry({
+        data: { name, phone, email, grade, sourceName, note, utm: readUtm() },
+      });
+      if (!crm.ok) {
+        setMessage(crm.error);
+        setState("error");
+        return;
+      }
+    } catch (error) {
+      console.error(error);
+      setMessage("Please check your details and try again.");
+      setState("error");
+      return;
+    } finally {
+      await backup;
+    }
+
     navigate({ to: "/thank-you", search: { type: k } });
   }
-  return { state, submit };
+  return { state, message, submit };
 }
 
 export function Card({ children, className = "" }: { children: ReactNode; className?: string }) {

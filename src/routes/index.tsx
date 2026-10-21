@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, type FormEvent } from "react";
 import { useLeadSubmit } from "@/components/ekaaya";
+import { ADMISSION_CLASSES } from "@/lib/simply-admission";
 import logoSrc from "@/assets/logo.png";
 const logo = { url: logoSrc };
 import heroSrc from "@/assets/hero-home.jpg";
@@ -59,14 +60,17 @@ const TEL = "tel:+918866352292";
 const EMAIL = "info@ekaaya.education";
 const WA = "https://wa.me/918866352292?text=" + encodeURIComponent("Hi Ekaaya, I'd like to know about admissions.");
 const MAP = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent("Ekaaya International School, Sokhdakhurd, Bill Road, near Dadapura crossing, Vadodara");
-const GRADES = ["Nursery", "Jr.KG", "Sr.KG", "Grade 1", "Grade 2", "Grade 3", "Grade 4"];
 
 type Kind = "enquiry" | "visit";
 const input = "w-full rounded-lg border border-input bg-card px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-ring";
 
 function LeadForm({ kind, cta, wide }: { kind: Kind; cta: string; wide?: boolean }) {
   const [mode, setMode] = useState<Kind>(kind);
-  const lead = useLeadSubmit(() => mode, "home");
+  const lead = useLeadSubmit(
+    () => mode,
+    "home",
+    () => (mode === "enquiry" ? "Quick Enquiry" : wide ? "Book My Visit" : "Book a Tour"),
+  );
   const state = lead.state;
   const submit = (e: FormEvent<HTMLFormElement>) => lead.submit(e, (f) => (f.get("when") as string) || null);
   const grid = wide ? "grid gap-3 sm:grid-cols-2" : "grid gap-3";
@@ -83,11 +87,11 @@ function LeadForm({ kind, cta, wide }: { kind: Kind; cta: string; wide?: boolean
         </div>
       )}
       <input name="name" required maxLength={100} placeholder="Parent's name" className={input} />
-      <input name="phone" required type="tel" placeholder="Mobile number" className={input} />
+      <input name="phone" required type="tel" inputMode="numeric" autoComplete="tel" placeholder="10-digit mobile number" className={input} />
       {wide && <input name="email" type="email" maxLength={255} placeholder="Email (optional)" className={input} />}
       <select name="grade" required defaultValue="" className={input}>
         <option value="" disabled>Admission for</option>
-        {GRADES.map((g) => <option key={g}>{g}</option>)}
+        {ADMISSION_CLASSES.map((g) => <option key={g} value={g}>{g}</option>)}
       </select>
       {mode === "visit" && (
         <select name="when" defaultValue="Weekday morning" className={input}>
@@ -100,7 +104,7 @@ function LeadForm({ kind, cta, wide }: { kind: Kind; cta: string; wide?: boolean
         className={`rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:opacity-90 disabled:opacity-60 ${wide ? "sm:col-span-2" : ""}`}>
         {state === "sending" ? "Sending…" : mode === "visit" && !wide ? "Book My Campus Tour" : cta}
       </button>
-      {state === "error" && <p className="text-xs text-destructive">Please check your details and try again.</p>}
+      {state === "error" && <p className={`text-xs text-destructive ${wide ? "sm:col-span-2" : ""}`}>{lead.message}</p>}
     </form>
   );
 }

@@ -8,6 +8,7 @@ const wellbeing = { url: wellbeingSrc };
 import sportsSrc from "@/assets/early-years/early-years-caretaker-attention.jpg";
 const sports = { url: sportsSrc };
 import { Card, Heading, MobileBar, SiteFooter, SiteHeader, Underline, inputCls, useLeadSubmit } from "@/components/ekaaya";
+import { EARLY_YEARS_CLASSES } from "@/lib/simply-admission";
 
 export const Route = createFileRoute("/early-years")({
   head: () => ({
@@ -23,23 +24,21 @@ export const Route = createFileRoute("/early-years")({
   component: EarlyYears,
 });
 
-const AGES = ["Pre-K / Nursery (3–4)", "KG (4–6)"];
-
 function EYForm() {
-  const { state, submit } = useLeadSubmit("early-years-session", "early-years-page");
+  const { state, message, submit } = useLeadSubmit("early-years-session", "early-years-page", "Book a Tour");
   return (
     <form onSubmit={(e) => submit(e)} className="grid gap-3">
       <input name="name" required maxLength={100} placeholder="Parent's name" className={inputCls} />
-      <input name="phone" required type="tel" placeholder="Mobile / WhatsApp number" className={inputCls} />
+      <input name="phone" required type="tel" inputMode="numeric" autoComplete="tel" placeholder="10-digit mobile number" className={inputCls} />
       <input name="email" type="email" maxLength={255} placeholder="Email (optional)" className={inputCls} />
       <select name="grade" required defaultValue="" className={inputCls}>
-        <option value="" disabled>Child's age group</option>
-        {AGES.map((g) => <option key={g}>{g}</option>)}
+        <option value="" disabled>Child's class</option>
+        {EARLY_YEARS_CLASSES.map((g) => <option key={g.value} value={g.value}>{g.label}</option>)}
       </select>
       <button disabled={state === "sending"} className="rounded-lg bg-brand-brown px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:opacity-90 disabled:opacity-60">
         {state === "sending" ? "Sending…" : "Book a Discovery Session"}
       </button>
-      {state === "error" && <p className="text-xs text-destructive">Please check your details and try again.</p>}
+      {state === "error" && <p className="text-xs text-destructive">{message}</p>}
     </form>
   );
 }
