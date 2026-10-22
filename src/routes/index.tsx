@@ -165,8 +165,8 @@ const LIFE = [
 ];
 
 const VOICES = [
-  { who: "From the Founder's desk", name: "Our Founder", img: voiceFounder, quote: "I started Ekaaya because every child deserves a school that makes room for who they are, not one that asks them to fit in. We are building today for what comes next." },
-  { who: "From the School Head", name: "Our School Head", img: voiceHead, quote: "Every child holds a world of possibilities and a unique potential to grow. As educators, our greatest privilege is to nurture curiosity, build confidence and character, and empower children to discover who they can become." },
+  { who: "Our Founder and co-founder", name: "Viral Patel & Hiral Patel", img: voiceFounder, quote: "I started Ekaaya because every child deserves a school that makes room for who they are, not one that asks them to fit in. We are building today for what comes next." },
+  { who: "From the School Head", name: "Aneeka Kothari", img: voiceHead, quote: "Every child holds a world of possibilities and a unique potential to grow. As educators, our greatest privilege is to nurture curiosity, build confidence and character, and empower children to discover who they can become." },
   { who: "From the Primary Coordinator", name: "Primary coordinator", img: voicePrimary, quote: "We believe every child is curious and capable. We nurture joyful, meaningful learning beyond textbooks, building confidence, values and life skills to help children become independent, compassionate and responsible lifelong learners." },
   { who: "From the Sports Coordinator", name: "Sports coordinator", img: voiceSports, quote: "Believe in yourself, embrace challenges, and always give your best! Sports build character, discipline, and teamwork while helping you discover your inner strength. Remember, every champion starts with the courage to try!", aside: "“A champion is someone who gets up when they can’t.”\n— Jack Dempsey" },
 ];
