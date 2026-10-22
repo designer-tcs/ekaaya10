@@ -43,7 +43,15 @@ const CLASS_ALIASES: Record<string, (typeof ADMISSION_CLASSES)[number]> = {
   "grade 4": "Grade 4",
 };
 
-const UTM_KEYS = ["UTM_Source", "UTM_Medium", "UTM_Campaign", "UTM_Term", "UTM_Content"] as const;
+const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"] as const;
+
+const UTM_ALIASES: Record<(typeof UTM_KEYS)[number], readonly string[]> = {
+  utm_source: ["utm_source", "UTM_Source"],
+  utm_medium: ["utm_medium", "UTM_Medium"],
+  utm_campaign: ["utm_campaign", "UTM_Campaign"],
+  utm_term: ["utm_term", "UTM_Term"],
+  utm_content: ["utm_content", "UTM_Content"],
+};
 
 export type EnquiryInput = {
   name: string;
@@ -85,20 +93,13 @@ export function isEmail(input: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input);
 }
 
-/** Reads UTM params from the current page. The CRM expects keys such as UTM_Source and UTM_Term. */
+/** Reads UTM params from the current page and returns them as utm_source, utm_medium, and so on. */
 export function readUtm(): Record<string, string> {
   if (typeof window === "undefined") return {};
   const params = new URLSearchParams(window.location.search);
-  const aliases: Record<(typeof UTM_KEYS)[number], string[]> = {
-    UTM_Source: ["UTM_Source", "utm_source"],
-    UTM_Medium: ["UTM_Medium", "utm_medium"],
-    UTM_Campaign: ["UTM_Campaign", "utm_campaign"],
-    UTM_Term: ["UTM_Term", "utm_term"],
-    UTM_Content: ["UTM_Content", "utm_content"],
-  };
   const out: Record<string, string> = {};
   for (const key of UTM_KEYS) {
-    for (const alias of aliases[key]) {
+    for (const alias of UTM_ALIASES[key]) {
       const value = params.get(alias)?.trim();
       if (value) {
         out[key] = value.slice(0, 200);
@@ -138,7 +139,7 @@ export function prepareLead(input: EnquiryInput): PreparedLead | { ok: false; er
   if (remarks) body["remarks"] = remarks;
 
   for (const key of UTM_KEYS) {
-    const value = input.utm?.[key]?.trim();
+    const value = UTM_ALIASES[key].map((alias) => input.utm?.[alias]?.trim()).find(Boolean);
     if (value) body[key] = value.slice(0, 200);
   }
 

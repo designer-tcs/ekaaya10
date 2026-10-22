@@ -37,7 +37,7 @@ describe("prepareLead", () => {
       grade: "Jr.KG",
       sourceName: "Book a Tour",
       note: "page: tour-page · tour: 2026-10-22 9:30 – 10:30 AM",
-      utm: { UTM_Source: "google", UTM_Term: "vadodara school", ignored: "no" },
+      utm: { UTM_Source: "google", utm_term: "vadodara school", ignored: "no" },
     });
 
     expect(prepared.ok).toBe(true);
@@ -51,10 +51,11 @@ describe("prepareLead", () => {
       sourceName: "Book a Tour",
       udf_AQYJBOUJCGNZOZVJGFYAVHRQSKWMEW: "Book a Tour",
       remarks: "page: tour-page · tour: 2026-10-22 9:30 – 10:30 AM",
-      UTM_Source: "google",
-      UTM_Term: "vadodara school",
+      utm_source: "google",
+      utm_term: "vadodara school",
     });
     expect(prepared.body["ignored"]).toBeUndefined();
+    expect(prepared.body["UTM_Source"]).toBeUndefined();
   });
 
   it("requires a usable class and a real mobile number", () => {
