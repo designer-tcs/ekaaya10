@@ -165,10 +165,10 @@ const LIFE = [
 ];
 
 const VOICES = [
-  { who: "Our Founder and co-founder", name: "Viral Patel & Hiral Patel", img: voiceFounder, quote: "I started Ekaaya because every child deserves a school that makes room for who they are, not one that asks them to fit in. We are building today for what comes next." },
-  { who: "From the School Head", name: "Aneeka Kothari", img: voiceHead, quote: "Every child holds a world of possibilities and a unique potential to grow. As educators, our greatest privilege is to nurture curiosity, build confidence and character, and empower children to discover who they can become." },
-  { who: "From the Primary Coordinator", name: "Primary coordinator", img: voicePrimary, quote: "We believe every child is curious and capable. We nurture joyful, meaningful learning beyond textbooks, building confidence, values and life skills to help children become independent, compassionate and responsible lifelong learners." },
-  { who: "From the Sports Coordinator", name: "Sports coordinator", img: voiceSports, quote: "Believe in yourself, embrace challenges, and always give your best! Sports build character, discipline, and teamwork while helping you discover your inner strength. Remember, every champion starts with the courage to try!", aside: "“A champion is someone who gets up when they can’t.”\n— Jack Dempsey" },
+  { pill: "Our Founder and co-founder", who: "Our Founder and co-founder", name: "Viral Patel & Hiral Patel", designation: "Our Founder and co-founder", img: voiceFounder, quote: "I started Ekaaya because every child deserves a school that makes room for who they are, not one that asks them to fit in. We are building today for what comes next." },
+  { pill: "Our School Head", who: "From the School Head", name: "Aneeka Kothari", designation: "Our School Head", img: voiceHead, quote: "Every child holds a world of possibilities and a unique potential to grow. As educators, our greatest privilege is to nurture curiosity, build confidence and character, and empower children to discover who they can become." },
+  { pill: "Primary coordinator", who: "From the Primary Coordinator", name: "Primary coordinator", img: voicePrimary, quote: "We believe every child is curious and capable. We nurture joyful, meaningful learning beyond textbooks, building confidence, values and life skills to help children become independent, compassionate and responsible lifelong learners." },
+  { pill: "Sports coordinator", who: "From the Sports Coordinator", name: "Sports coordinator", img: voiceSports, quote: "Believe in yourself, embrace challenges, and always give your best! Sports build character, discipline, and teamwork while helping you discover your inner strength. Remember, every champion starts with the courage to try!", aside: "“A champion is someone who gets up when they can’t.”\n— Jack Dempsey" },
 ];
 
 function Index() {
@@ -312,9 +312,9 @@ function Index() {
         <p className="mx-auto mt-4 max-w-xl text-center text-muted-foreground">Ekaaya opens its doors this year. Hear from the people who are building it for your child.</p>
         <div className="mt-8 flex flex-wrap justify-center gap-2">
           {VOICES.map((x, i) => (
-            <button key={x.name} onClick={() => setVoice(i)}
+            <button key={x.pill} onClick={() => setVoice(i)}
               className={`rounded-full px-4 py-2 text-sm font-medium transition ${voice === i ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:text-foreground"}`}>
-              {x.name}
+              {x.pill}
             </button>
           ))}
         </div>
@@ -327,6 +327,7 @@ function Index() {
             <p className="mt-3 font-serif text-2xl italic leading-snug md:text-3xl">“{v.quote}”</p>
             {v.aside && <p className="mt-4 whitespace-pre-line font-serif text-xl italic leading-snug md:text-2xl">{v.aside}</p>}
             <footer className="mt-4 font-script text-2xl text-brand-brown">{v.name}</footer>
+            {"designation" in v && v.designation && <p className="mt-1 text-sm font-medium text-brand-brown">{v.designation}</p>}
           </blockquote>
         </div>
       </section>
