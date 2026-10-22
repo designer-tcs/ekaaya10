@@ -44,7 +44,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Let them be. Let them become. Admissions open at Ekaaya International School, Bill Sokhda Road, Vadodara for Pre-K to Grade 4. Book a campus visit.",
+          "Let them be. Let them become. Admissions open at Ekaaya International School, Sokhdakhurd, 30 mtr. Bill Sokhda Road, near Dadapura crossing, Vadodara for Pre-K to Grade 4. Book a campus visit.",
       },
       { property: "og:title", content: "Ekaaya International School | Admissions Open" },
       { property: "og:description", content: "A place to become: competent, compassionate, conscious. Pre-K to Grade 4, Vadodara." },
@@ -59,7 +59,7 @@ const PHONE = "+91 8866352292";
 const TEL = "tel:+918866352292";
 const EMAIL = "info@ekaaya.education";
 const WA = "https://wa.me/918866352292?text=" + encodeURIComponent("Hi Ekaaya, I'd like to know about admissions.");
-const MAP = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent("Ekaaya International School, Sokhdakhurd, Bill Road, near Dadapura crossing, Vadodara");
+const MAP = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent("Ekaaya International School, Sokhdakhurd, 30 mtr. Bill Sokhda Road, near Dadapura crossing, Vadodara");
 
 type Kind = "enquiry" | "visit";
 const input = "w-full rounded-lg border border-input bg-card px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-ring";
@@ -211,7 +211,7 @@ function Index() {
             <h1 className="text-5xl font-bold leading-[1.05] text-brand-brown md:text-7xl">Let Them<br />Become.</h1>
             <Underline className="w-56" />
             <p className="mt-5 max-w-md text-lg text-muted-foreground">
-              Built today, for what comes next. Learning that makes room for individuality, on Bill Sokhda Road, Vadodara.
+              Built today, for what comes next. Learning that makes room for individuality, on Sokhdakhurd, 30 mtr. Bill Sokhda Road, near Dadapura crossing, Vadodara.
             </p>
             <div className="mt-6 flex flex-wrap gap-3 text-sm">
               {["Competent.", "Compassionate.", "Conscious."].map((t, i) => (

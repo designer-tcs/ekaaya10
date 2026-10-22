@@ -17,7 +17,7 @@ export const Route = createFileRoute("/tour")({
   head: () => ({
     meta: [
       { title: "Book a Campus Tour | Ekaaya International School Vadodara" },
-      { name: "description", content: "Walk the open campus and meet our founding educators. Pick a date and slot for your Ekaaya campus tour on Bill Sokhda Road, Vadodara." },
+      { name: "description", content: "Walk the open campus and meet our founding educators. Pick a date and slot for your Ekaaya campus tour on Sokhdakhurd, 30 mtr. Bill Sokhda Road, near Dadapura crossing, Vadodara." },
       { property: "og:title", content: "Book a Campus Tour | Ekaaya International School" },
       { property: "og:description", content: "Pick a date and slot to walk the campus and meet our founding educators. Pre-K to Grade 4." },
       { property: "og:type", content: "website" },
@@ -78,9 +78,9 @@ function TourForm() {
 }
 
 const HIGHLIGHTS = [
-  { img: competent.url, t: "Open learning courtyards", d: "Classrooms that open into green, light-filled spaces." },
-  { img: compassionate.url, t: "Outdoor learning", d: "Nature, stories and play, beyond the classroom walls." },
-  { img: conscious.url, t: "Meet the founding educators", d: "Sit with the people who will know your child by name." },
+  { img: competent.url, t: "Learning Beyond Four Walls", d: "Bright, open classrooms that extend into green courtyards, creating space for exploration and interaction." },
+  { img: compassionate.url, t: "Nature as a Classroom", d: "From observing nature to asking questions, the outdoors becomes part of everyday learning." },
+  { img: conscious.url, t: "Meet the Core Team", d: "Get to know the people who bring Ekaaya's vision to life and understand their approach to education." },
 ];
 
 function TourPage() {
@@ -93,13 +93,13 @@ function TourPage() {
         <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-background/30" />
         <div className="relative mx-auto grid max-w-6xl items-center gap-10 px-5 py-12 md:grid-cols-[1.1fr_1fr] md:py-16">
           <div>
-            <span className="inline-flex items-center gap-2 rounded-full bg-card px-3 py-1 text-xs font-semibold shadow-sm">📍 Bill Sokhda Road, Vadodara</span>
-            <p className="mt-6 font-script text-3xl text-foreground/80">Come see it for yourself.</p>
-            <h1 className="text-5xl font-bold leading-[1.05] text-brand-brown md:text-6xl">Walk the campus.<br />Meet the people.</h1>
+            <span className="inline-flex items-center gap-2 rounded-full bg-card px-3 py-1 text-xs font-semibold shadow-sm">📍 Sokhdakhurd, 30 mtr. Bill Sokhda Road, near Dadapura crossing, Vadodara</span>
+            <p className="mt-6 font-script text-3xl text-foreground/80">Your first glimpse of Ekaaya.</p>
+            <h1 className="text-5xl font-bold leading-[1.05] text-brand-brown md:text-6xl">Some places are better experienced.</h1>
             <Underline className="w-56" />
-            <p className="mt-5 max-w-md text-lg text-muted-foreground">A 40-minute guided walkthrough of our open campus with the founding educators. Pre-K to Grade 4.</p>
+            <p className="mt-5 max-w-md text-lg text-muted-foreground">Explore our Campus, meet our Educators and discover what makes learning at Ekaaya different.</p>
             <div className="mt-6 grid max-w-md grid-cols-2 gap-3">
-              {[["Pre-K–4", "admissions open"], ["40 min", "guided walk"]].map(([n, l]) => (
+              {[["Discover Ekaaya", "Admissions Open"], ["40 Minutes", "Guided Experience"]].map(([n, l]) => (
                 <div key={l} className="rounded-xl bg-card/90 p-3 text-center shadow-sm">
                   <p className="font-serif text-xl font-bold text-brand-green">{n}</p>
                   <p className="text-[11px] leading-tight text-muted-foreground">{l}</p>
@@ -118,7 +118,10 @@ function TourPage() {
 
       {/* Fold 2 */}
       <section className="mx-auto max-w-6xl px-5 py-16">
-        <Heading script="What you'll see" title="A living learning ecosystem." center />
+        <div className="flex flex-col items-center text-center">
+          <h2 className="text-4xl font-bold text-brand-brown md:text-5xl">A Campus Designed for Discovery.</h2>
+          <Underline />
+        </div>
         <div className="mt-10 grid gap-6 md:grid-cols-3">
           {HIGHLIGHTS.map((h) => (
             <div key={h.t} className="rounded-2xl border border-border bg-card p-3">
@@ -133,9 +136,9 @@ function TourPage() {
       {/* Itinerary */}
       <section className="bg-muted/60 px-5 py-16">
         <div className="mx-auto max-w-3xl">
-          <Heading script="Your 40 minutes" title="How the tour unfolds." center />
-          <p className="mx-auto mt-4 max-w-2xl text-center text-muted-foreground">We look forward to welcoming you to Ekaaya. Your visit is an opportunity to explore our campus, understand the thinking behind its design, and have an open conversation with our team.</p>
-          <p className="mx-auto mt-3 max-w-2xl text-center text-sm text-muted-foreground">The guided campus tour takes approximately 40 minutes. The full visit also includes the welcome and a follow-up conversation.</p>
+          <Heading script="A little time. A closer look." title="Experience Ekaaya for Yourself" center />
+          <p className="mx-auto mt-4 max-w-2xl text-center text-muted-foreground">Step inside Ekaaya, explore the spaces where learning comes alive, discover the thought behind our campus and meet the team bringing it all together.</p>
+          <p className="mx-auto mt-3 max-w-2xl text-center text-muted-foreground">Your visit includes a 40-minute guided campus tour, followed by an opportunity to ask questions, share your expectations and learn more about the Ekaaya experience.</p>
           <div className="mt-10 grid gap-4">
             {[
               ["A Warm Welcome", "Begin your visit with a welcome from our front office executive, followed by an introduction from our admissions counsellor."],

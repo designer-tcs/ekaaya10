@@ -11,10 +11,10 @@ export const TEL = "tel:+918866352292";
 export const EMAIL = "info@ekaaya.education";
 export const wa = (msg: string) => "https://wa.me/918866352292?text=" + encodeURIComponent(msg);
 export const WA = wa("Hi Ekaaya, I'd like to know about admissions.");
-export const ADDRESS = "Bill Sokhda Road, Sokhdakhurd, near Dadapura crossing, Vadodara";
+export const ADDRESS = "Sokhdakhurd, 30 mtr. Bill Sokhda Road, near Dadapura crossing, Vadodara";
 export const MAP =
   "https://www.google.com/maps/search/?api=1&query=" +
-  encodeURIComponent("Ekaaya International School, Sokhdakhurd, Bill Road, near Dadapura crossing, Vadodara");
+  encodeURIComponent("Ekaaya International School, Sokhdakhurd, 30 mtr. Bill Sokhda Road, near Dadapura crossing, Vadodara");
 export const inputCls =
   "w-full rounded-lg border border-input bg-card px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-ring";
 

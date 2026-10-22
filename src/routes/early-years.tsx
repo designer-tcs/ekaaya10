@@ -66,8 +66,8 @@ function EarlyYears() {
           </div>
           <Card>
             <div id="book" className="scroll-mt-24" />
-            <p className="font-script text-2xl text-brand-green">For parents of little ones</p>
-            <p className="mb-4 font-serif text-xl font-semibold">Visit, play or read first</p>
+            <p className="font-script text-2xl text-brand-green">For your little one's first big steps</p>
+            <p className="mb-4 font-serif text-xl font-semibold">Let's Begin Their Ekaaya Journey</p>
             <EYForm />
           </Card>
         </div>
