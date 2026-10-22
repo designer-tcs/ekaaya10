@@ -129,24 +129,24 @@ function Heading({ script, title, center }: { script: string; title: string; cen
 
 const WAY = [
   {
-    title: "The Ekaaya curriculum",
+    title: "The Ekaaya Curriculum",
     img: wayTree,
     alt: "A watercolour tree whose leaves are fingerprints, roots spreading below",
-    text: "A rigorous academic curriculum with arts, sport, and social-emotional learning intentionally woven throughout every stage of learning.",
+    text: "A balanced approach integrating academics, arts, sports and social-emotional learning.",
     tags: ["Academic Rigour", "Sports", "Arts", "SEL"],
   },
   {
-    title: "The I-ACT programme",
+    title: "The I-ACT Programme",
     img: wayHands,
     alt: "Cupped watercolour hands lifting a small fingerprint figure reaching toward a sprig",
-    text: "Ekaaya’s signature framework for initiative, enterprise, and leadership, from the early years through Grade 12.",
+    text: "Building initiative, enterprise and leadership skills from the early years through Grade 12.",
     tags: ["CARES", "Enterprise", "Democracy"],
   },
   {
-    title: "Ekaaya enrichment",
+    title: "Ekaaya Enrichment",
     img: wayStage,
     alt: "A watercolour open-air stage with bunting and small fingerprint children celebrating",
-    text: "The experiences that enrich school life—helping students discover new interests, develop lifelong skills, and explore their passions beyond the classroom.",
+    text: "Beyond-classroom experiences that spark interests, develop life skills and nurture individual talents.",
     tags: ["Ekaaya Fest", "Ekaaya Spotlight", "Steam Program", "Life Lab", "Organic Farming"],
   },
 ];
@@ -158,14 +158,14 @@ const LIFE = [
     span: "md:col-span-2 md:row-span-2",
     places: ["Amra Canopy", "Jan Path", "The Atelier", "Vyoma", "Marmar Woods", "Casita"],
   },
-  { title: "Performing & Visual Arts", img: arts, text: "Art, pottery, music, dance and drama, indoors and out." },
-  { title: "Athletics & Physical Play", img: sports, text: "Kicking off, movement, sandpit and sports." },
-  { title: "Student Agency & Belonging", img: agency, text: "Democracy & Government, and an everyday rhythm children own." },
+  { title: "Performing & Visual Arts", img: arts, text: "Art, pottery, music, dance and drama, indoors and out.", focus: "object-[center_28%] md:object-center" },
+  { title: "Athletics & Physical Play", img: sports, text: "Kicking off, movement, sandpit and sports.", focus: "object-[center_22%] md:object-center" },
+  { title: "Student Agency & Belonging", img: agency, text: "Democracy & Government, and an everyday rhythm children own.", focus: "object-[center_18%] md:object-center" },
   { title: "Wellbeing & Care", img: wellbeing, text: "Child-centred, a safe community and thoughtful nutrition." },
 ];
 
 const VOICES = [
-  { pill: "Our Founder and co-founder", who: "Our Founder and co-founder", name: "Viral Patel & Hiral Patel", designation: "Our Founder and co-founder", img: voiceFounder, quote: "I started Ekaaya because every child deserves a school that makes room for who they are, not one that asks them to fit in. We are building today for what comes next." },
+  { pill: "Our Founder and co-founder", who: "Our Founder and co-founder", name: "Viral Patel & Hiral Patel", designation: "Our Founder and co-founder", img: voiceFounder, quote: "We started Ekaaya because every child deserves a school that makes room for who they are, not one that asks them to fit in. We are building today for what comes next." },
   { pill: "Our School Head", who: "From the School Head", name: "Aneeka Kothari", designation: "Our School Head", img: voiceHead, quote: "Every child holds a world of possibilities and a unique potential to grow. As educators, our greatest privilege is to nurture curiosity, build confidence and character, and empower children to discover who they can become." },
   { pill: "Primary coordinator", who: "From the Primary Coordinator", name: "Primary coordinator", img: voicePrimary, quote: "We believe every child is curious and capable. We nurture joyful, meaningful learning beyond textbooks, building confidence, values and life skills to help children become independent, compassionate and responsible lifelong learners." },
   { pill: "Sports coordinator", who: "From the Sports Coordinator", name: "Sports coordinator", img: voiceSports, quote: "Believe in yourself, embrace challenges, and always give your best! Sports build character, discipline, and teamwork while helping you discover your inner strength. Remember, every champion starts with the courage to try!", aside: "“A champion is someone who gets up when they can’t.”\n— Jack Dempsey" },
@@ -229,15 +229,15 @@ function Index() {
 
       {/* 3. Philosophy */}
       <section id="philosophy" className="mx-auto max-w-6xl scroll-mt-20 px-5 py-16">
-        <div className="grid gap-6 md:grid-cols-2 md:items-end">
+        <div>
           <Heading script="Our Philosophy" title="A Place to Become." />
-          <p className="text-muted-foreground">Every child grows differently. Ekaaya gives each one room to grow in their own way, nurturing three dimensions of a whole learner.</p>
+          <p className="mt-4 max-w-2xl text-muted-foreground">Every child grows differently. Ekaaya gives each one room to grow in their own way, nurturing three dimensions of a whole learner.</p>
         </div>
         <div className="mt-10 grid gap-6 sm:grid-cols-3">
           {[
-            { img: competent, label: "Competent.", tone: "bg-brand-brown", text: "Skills, knowledge and the confidence to apply them: hands-on, curious and capable." },
-            { img: compassionate, label: "Compassionate.", tone: "bg-brand-green", text: "Kindness, friendship and care for every person around them." },
-            { img: conscious, label: "Conscious.", tone: "bg-brand-sky", text: "Awareness of self, community and the planet we share." },
+            { img: competent, label: "Competent.", tone: "bg-brand-brown", text: "Building knowledge, skills and confidence to think independently and take on new challenges." },
+            { img: compassionate, label: "Compassionate.", tone: "bg-brand-green", text: "Growing with kindness, empathy and respect for others, and learning to care for one another." },
+            { img: conscious, label: "Conscious.", tone: "bg-brand-sky", text: "Understanding themselves, appreciating the world around them and making thoughtful, responsible choices." },
           ].map((p) => (
             <figure key={p.label} className="group">
               <div className="overflow-hidden rounded-b-[999px] rounded-t-xl">
@@ -256,22 +256,24 @@ function Index() {
       <section id="life" className="scroll-mt-20 bg-card/60 py-16">
         <div className="mx-auto max-w-6xl px-5">
           <div className="flex flex-wrap items-end justify-between gap-4">
-            <Heading script="The school that looks like a school" title="Life at Ekaaya." />
+            <Heading script="Where childhood has room to unfold." title="Life at Ekaaya." />
             <a href="#visit" className="rounded-lg border border-foreground px-5 py-2.5 text-sm font-semibold hover:bg-foreground hover:text-background">See it in person →</a>
           </div>
           <div className="mt-10 grid auto-rows-[220px] gap-4 md:grid-cols-4">
             {LIFE.map((l) => (
               <figure key={l.title} className={`group relative overflow-hidden rounded-2xl ${l.span ?? "md:col-span-2 lg:col-span-1"}`}>
-                <img src={l.img.url} alt={l.title} loading="lazy" className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
-                <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-foreground/90 to-transparent p-4 text-background">
-                  <p className="font-serif text-lg font-semibold">{l.title}</p>
-                  {l.places ? (
-                    <p className="text-xs text-background/85">
-                      Amra Canopy, The Atelier, Marmar Woods, Jan Path, Vyoma, Casita.
-                    </p>
-                  ) : (
-                    <p className="text-xs text-background/85">{l.text}</p>
-                  )}
+                <img src={l.img.url} alt={l.title} loading="lazy" className={`h-full w-full object-cover transition duration-500 group-hover:scale-105 ${l.focus ?? "object-center"}`} />
+                <figcaption className="absolute inset-x-3 bottom-3">
+                  <div className="rounded-lg bg-brand-brown/80 px-3 py-2 text-background shadow-sm backdrop-blur-sm">
+                    <p className="font-serif text-lg font-semibold leading-tight">{l.title}</p>
+                    {l.places ? (
+                      <p className="mt-1 text-xs leading-snug text-background/90">
+                        Amra Canopy, The Atelier, Marmar Woods, Jan Path, Vyoma, Casita.
+                      </p>
+                    ) : (
+                      <p className="mt-1 text-xs leading-snug text-background/90">{l.text}</p>
+                    )}
+                  </div>
                 </figcaption>
               </figure>
             ))}
@@ -281,21 +283,17 @@ function Index() {
 
       {/* The Ekaaya way */}
       <section id="pedagogy" className="mx-auto max-w-6xl scroll-mt-20 px-5 py-16">
-        <div className="flex flex-col items-center text-center">
-          <h2 className="text-4xl font-bold text-brand-brown md:text-5xl">The Ekaaya way</h2>
-          <Underline />
-        </div>
-        <p className="mx-auto mt-4 max-w-2xl text-center text-muted-foreground">Three pillars. One complete education.</p>
-        <div className="mt-10 grid gap-6 md:grid-cols-3">
+        <Heading script="Three Pillars. One Purpose." title="The Ekaaya Way" center />
+        <div className="mt-10 grid items-stretch gap-6 md:grid-cols-3">
           {WAY.map((p) => (
-            <article key={p.title} className="flex flex-col overflow-hidden rounded-2xl border border-border bg-card">
-              <div className="relative m-3 mb-0 aspect-[4/5] overflow-hidden rounded-xl bg-muted sm:aspect-square md:aspect-[4/5]">
+            <article key={p.title} className="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card">
+              <div className="relative m-3 mb-0 aspect-[4/5] overflow-hidden rounded-xl bg-muted">
                 <img src={p.img.url} alt={p.alt} loading="lazy" className="absolute inset-0 h-full w-full object-cover object-center" />
               </div>
               <div className="flex flex-1 flex-col p-6">
-                <h3 className="text-2xl font-semibold">{p.title}</h3>
+                <h3 className="min-h-16 text-2xl font-semibold leading-tight">{p.title}</h3>
                 <p className="mt-3 text-sm text-muted-foreground">{p.text}</p>
-                <div className="mt-4 flex flex-wrap gap-2">
+                <div className="mt-auto flex flex-wrap gap-2 pt-4">
                   {p.tags.map((tag) => (
                     <span key={tag} className="rounded-full border border-border bg-background px-2.5 py-1 text-xs font-medium">{tag}</span>
                   ))}

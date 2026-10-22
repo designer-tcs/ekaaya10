@@ -44,9 +44,9 @@ function EYForm() {
 }
 
 const PILLARS = [
-  { img: wellbeing.url, t: "Emotional wellbeing first", d: "Feelings are named, welcomed and cared for before any lesson begins." },
-  { img: arts.url, t: "Play-based inquiry", d: "Mud, leaves, stories and questions. Learning that follows a child's wonder." },
-  { img: sports.url, t: "Dedicated caretaker attention", d: "Caretakers watch over meals, washroom and play through the whole day." },
+  { img: wellbeing.url, t: "Emotional Wellbeing", d: "Every child feels heard, understood and supported in a caring environment." },
+  { img: arts.url, t: "Learning Through Play", d: "Hands-on experiences that turn everyday discoveries into meaningful learning." },
+  { img: sports.url, t: "Attentive Care, Every Day", d: "Dedicated caretakers ensure children feel safe, comfortable and cared for throughout the day." },
 ];
 
 function EarlyYears() {
@@ -62,7 +62,7 @@ function EarlyYears() {
             <p className="mt-6 font-script text-3xl text-foreground/80">Every child grows differently.</p>
             <h1 className="text-5xl font-bold leading-[1.05] text-brand-brown md:text-6xl">Small steps.<br />Safe hands.</h1>
             <Underline className="w-56" />
-            <p className="mt-5 max-w-md text-lg text-muted-foreground">For toddlers, nursery and kindergarten: a calm, joyful first school where your child is held, heard and free to play.</p>
+            <p className="mt-5 max-w-md text-lg text-muted-foreground">From toddlers to nursery and kindergarten — we offer a world of play and imagination, where every child is free to explore and grow.</p>
           </div>
           <Card>
             <div id="book" className="scroll-mt-24" />
