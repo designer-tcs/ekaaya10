@@ -11,6 +11,7 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
+import { installClickTracking } from "../lib/gtm";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
 const GTM_ID = "GTM-KMZ6C5SF";
@@ -132,6 +133,8 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+
+  useEffect(() => installClickTracking(), []);
 
   return (
     <QueryClientProvider client={queryClient}>
