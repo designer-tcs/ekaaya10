@@ -47,7 +47,7 @@ function TourForm() {
   const days = useMemo(nextDays, []);
   const [day, setDay] = useState<string | null>(null);
   const [slot, setSlot] = useState<string | null>(null);
-  const { state, message, submit } = useLeadSubmit("tour", "tour-page", "Book a Tour");
+  const { state, message, submit } = useLeadSubmit("tour", "tour-page", "Book a Tour", "Campus Tour", "Book a Campus Tour");
   const chip = (on: boolean) => `rounded-lg border px-2 py-2 text-xs font-medium transition ${on ? "border-primary bg-primary text-primary-foreground" : "border-input bg-card"}`;
   return (
     <form onSubmit={(e) => submit(e, () => `tour: ${day ?? "any day"} ${slot ?? "any slot"}`)} className="grid gap-3">

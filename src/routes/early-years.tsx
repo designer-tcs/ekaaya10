@@ -25,7 +25,7 @@ export const Route = createFileRoute("/early-years")({
 });
 
 function EYForm() {
-  const { state, message, submit } = useLeadSubmit("early-years-session", "early-years-page", "Book a Tour");
+  const { state, message, submit } = useLeadSubmit("early-years-session", "early-years-page", "Book a Tour", "Early Years", "Book a Discovery Session");
   return (
     <form onSubmit={(e) => submit(e)} className="grid gap-3">
       <input name="name" required maxLength={100} placeholder="Parent's name" className={inputCls} />

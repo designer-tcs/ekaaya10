@@ -5,6 +5,8 @@ export const ACADEMIC_YEAR = "2027-28";
 
 /** Custom field from the school's Simply Admission sample request. It stores the form source. */
 export const SOURCE_UDF = "udf_AQYJBOUJCGNZOZVJGFYAVHRQSKWMEW";
+const SECTION_NAME_UDF = "udf_JQFIQWACOKFZASGRXBKHANWJNAVWDA";
+const FORM_NAME_UDF = "udf_MENENADGOKAXDHCXHBPRKRQYRWKARQ";
 
 export const CRM_SOURCES = ["Quick Enquiry", "Book a Tour", "Book My Visit"] as const;
 export type CrmSource = (typeof CRM_SOURCES)[number];
@@ -53,12 +55,49 @@ const UTM_ALIASES: Record<(typeof UTM_KEYS)[number], readonly string[]> = {
   utm_content: ["utm_content", "UTM_Content"],
 };
 
+/** Extra query params from the Google Ads landing URL. */
+const EXTRA_PARAMS: Record<string, readonly string[]> = {
+  utm_device: ["utm_Device", "utm_device", "UTM_Device"],
+  gclid: ["gclid", "GCLID"],
+  utm_gender: ["utm_Gender", "utm_gender", "UTM_Gender"],
+  utm_household_income: ["utm_HouseholdIncome", "utm_householdincome", "UTM_HouseholdIncome"],
+  utm_age_group: ["utm_AgeGroup", "utm_agegroup", "UTM_AgeGroup"],
+};
+
+/** Choice fields. The value must be one of the options saved in Simply Admission. */
+const LEAD_SOURCE_CATEGORY = "udf_GKVCPLBVSMLDOZOLTEWWDMDRFFJSPH";
+const LEAD_SOURCE = "udf_OGLFUXYRCBMQWKOBHPKIPXTGHTRFAP";
+const LEAD_MEDIUM = "udf_XFNEPCTAIODGPIJFWGFDBFBAFMKOLD";
+
+/** Text fields. Campaign, keyword, creative, click id, and device stay here. */
+const CRM_TEXT_FIELDS = [
+  { udf: "udf_RXRFEWGKFDNGZGCGWWEVJULGDVONRE", from: "utm_term", max: 200 },
+  { udf: "udf_AQWGRQBVUIUGWKPQRVHIIVTWWLHYFU", from: "utm_content", max: 200 },
+  { udf: "udf_RSQQZWIRYBBIAKSPDIPKFXLWFDLEGS", from: "formUrl", max: 1000 },
+  { udf: "udf_TLWZSXLNVEBCGGZEPBASLNZRLZRIRC", from: "gclid", max: 500 },
+  { udf: "udf_XHPEKCQKBWIVLUWHTGEYULDJNMOJDP", from: "utm_device", max: 200 },
+  { udf: "udf_QTRGBYMJKKXGMKXAXZCMTCJMPHFEMD", from: "utm_gender", max: 200 },
+  { udf: "udf_JOSMRAABQDLGCRICPUZVFVHCIILOMP", from: "utm_household_income", max: 200 },
+  { udf: "udf_MLCWLSINAKLYUTGFYHTQSDSBKEMDCH", from: "utm_age_group", max: 200 },
+] as const;
+
+/** Website enquiries are form fills. Lead Source is only set when the click matches a saved option. */
+function leadSourceChoice(utm: Record<string, string>): string | undefined {
+  const source = [utm.utm_source, utm.UTM_Source].find((item) => item?.trim())?.trim().toLowerCase() ?? "";
+  const gclid = trackingValue(utm.gclid ?? utm.GCLID, 500);
+  if (/facebook|instagram|\bmeta\b|\bfb\b/.test(source)) return "Facebook Ads";
+  if (/google|adwords/.test(source) || gclid) return "Google Ads";
+  return undefined;
+}
+
 export type EnquiryInput = {
   name: string;
   phone: string;
   email?: string;
   grade: string;
   sourceName: string;
+  sectionName?: string;
+  formName?: string;
   note?: string;
   utm?: Record<string, string>;
 };
@@ -93,20 +132,35 @@ export function isEmail(input: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input);
 }
 
-/** Reads UTM params from the current page and returns them as utm_source, utm_medium, and so on. */
+function trackingValue(raw: string | null | undefined, max: number): string | undefined {
+  const value = raw?.trim();
+  if (!value || /^\{.+\}$/.test(value)) return undefined;
+  return value.slice(0, max);
+}
+
+function readParam(params: URLSearchParams, aliases: readonly string[], max: number): string | undefined {
+  for (const alias of aliases) {
+    const value = trackingValue(params.get(alias), max);
+    if (value) return value;
+  }
+  return undefined;
+}
+
+/** Reads UTM params, gclid, device, audience fields, and the page URL from the current page. */
 export function readUtm(): Record<string, string> {
   if (typeof window === "undefined") return {};
   const params = new URLSearchParams(window.location.search);
   const out: Record<string, string> = {};
   for (const key of UTM_KEYS) {
-    for (const alias of UTM_ALIASES[key]) {
-      const value = params.get(alias)?.trim();
-      if (value) {
-        out[key] = value.slice(0, 200);
-        break;
-      }
-    }
+    const value = readParam(params, UTM_ALIASES[key], 200);
+    if (value) out[key] = value;
   }
+  for (const [key, aliases] of Object.entries(EXTRA_PARAMS)) {
+    const value = readParam(params, aliases, key === "gclid" ? 500 : 200);
+    if (value) out[key] = value;
+  }
+  const formUrl = `${window.location.origin}${window.location.pathname}${window.location.search}`.slice(0, 1000);
+  if (formUrl) out.formUrl = formUrl;
   return out;
 }
 
@@ -132,15 +186,42 @@ export function prepareLead(input: EnquiryInput): PreparedLead | { ok: false; er
     sourceName: input.sourceName,
     [SOURCE_UDF]: input.sourceName,
   };
+  const sectionName = input.sectionName?.trim().slice(0, 200);
+  const formName = input.formName?.trim().slice(0, 200);
+  if (sectionName) body[SECTION_NAME_UDF] = sectionName;
+  if (formName) body[FORM_NAME_UDF] = formName;
   if (phone) body["mobileNo"] = phone;
   if (email) body["emailId"] = email;
 
   const remarks = (input.note ?? "").trim().slice(0, 500);
   if (remarks) body["remarks"] = remarks;
 
+  const utm = input.utm ?? {};
   for (const key of UTM_KEYS) {
-    const value = UTM_ALIASES[key].map((alias) => input.utm?.[alias]?.trim()).find(Boolean);
-    if (value) body[key] = value.slice(0, 200);
+    const value = trackingValue(
+      UTM_ALIASES[key].map((alias) => utm[alias]).find((item) => item?.trim()),
+      200,
+    );
+    if (value) body[key] = value;
+  }
+
+  body[LEAD_SOURCE_CATEGORY] = "Form Fill";
+  body[LEAD_MEDIUM] = "Form Fill, Whatsapp";
+  const leadSource = leadSourceChoice(utm);
+  if (leadSource) body[LEAD_SOURCE] = leadSource;
+
+  for (const field of CRM_TEXT_FIELDS) {
+    const aliases =
+      field.from in UTM_ALIASES
+        ? UTM_ALIASES[field.from as (typeof UTM_KEYS)[number]]
+        : field.from in EXTRA_PARAMS
+          ? EXTRA_PARAMS[field.from]
+          : [field.from];
+    const value = trackingValue(
+      aliases.map((alias) => utm[alias]).find((item) => item?.trim()),
+      field.max,
+    );
+    if (value) body[field.udf] = value;
   }
 
   return { ok: true, name, phone: phone ?? "", email, grade, body };

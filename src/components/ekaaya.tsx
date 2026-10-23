@@ -70,7 +70,13 @@ export function SiteFooter() {
 }
 
 /** Sends the enquiry to Simply Admission, keeps a copy in Supabase, then opens /thank-you. */
-export function useLeadSubmit(kind: string | (() => string), source: string, crmSource: CrmSource | (() => CrmSource)) {
+export function useLeadSubmit(
+  kind: string | (() => string),
+  source: string,
+  crmSource: CrmSource | (() => CrmSource),
+  sectionName: string,
+  formName: string | (() => string),
+) {
   const navigate = useNavigate();
   const [state, setState] = useState<"idle" | "sending" | "error">("idle");
   const [message, setMessage] = useState("");
@@ -107,6 +113,7 @@ export function useLeadSubmit(kind: string | (() => string), source: string, crm
     setMessage("");
     const k = typeof kind === "function" ? kind() : kind;
     const sourceName = typeof crmSource === "function" ? crmSource() : crmSource;
+    const form = typeof formName === "function" ? formName() : formName;
     const note = [`page: ${source}`, extra?.(f)].filter(Boolean).join(" · ").slice(0, 500);
 
     const backup = (async () => {
@@ -127,7 +134,7 @@ export function useLeadSubmit(kind: string | (() => string), source: string, crm
 
     try {
       const crm = await submitEnquiry({
-        data: { name, phone, email, grade, sourceName, note, utm: readUtm() },
+        data: { name, phone, email, grade, sourceName, sectionName, formName: form, note, utm: readUtm() },
       });
       if (!crm.ok) {
         setMessage(crm.error);

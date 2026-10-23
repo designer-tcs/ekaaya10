@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, type FormEvent } from "react";
 import { useLeadSubmit } from "@/components/ekaaya";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { ADMISSION_CLASSES } from "@/lib/simply-admission";
 import logoSrc from "@/assets/logo.png";
 const logo = { url: logoSrc };
@@ -64,12 +65,14 @@ const MAP = "https://www.google.com/maps/search/?api=1&query=" + encodeURICompon
 type Kind = "enquiry" | "visit";
 const input = "w-full rounded-lg border border-input bg-card px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-ring";
 
-function LeadForm({ kind, cta, wide }: { kind: Kind; cta: string; wide?: boolean }) {
+function LeadForm({ kind, cta, wide, section }: { kind: Kind; cta: string; wide?: boolean; section: string }) {
   const [mode, setMode] = useState<Kind>(kind);
   const lead = useLeadSubmit(
     () => mode,
     "home",
     () => (mode === "enquiry" ? "Quick Enquiry" : wide ? "Book My Visit" : "Book a Tour"),
+    section,
+    () => (mode === "enquiry" ? "Quick Enquiry" : wide ? "Book a Campus Visit" : "Book a Campus Tour"),
   );
   const state = lead.state;
   const submit = (e: FormEvent<HTMLFormElement>) => lead.submit(e, (f) => (f.get("when") as string) || null);
@@ -173,6 +176,7 @@ const VOICES = [
 
 function Index() {
   const [voice, setVoice] = useState(0);
+  const [enquireOpen, setEnquireOpen] = useState(false);
   const v = VOICES[voice] ?? VOICES[0]!;
   return (
     <main className="overflow-x-hidden bg-background pb-14 text-foreground sm:pb-0">
@@ -194,7 +198,7 @@ function Index() {
           </nav>
           <div className="flex items-center gap-2">
             <a href={WA} target="_blank" rel="noreferrer" className="hidden rounded-lg border border-brand-green px-4 py-2 text-sm font-semibold text-brand-green sm:block">WhatsApp</a>
-            <a href="#enquire" className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground">Enquire Now</a>
+            <button type="button" onClick={() => setEnquireOpen(true)} className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground">Enquire Now</button>
           </div>
         </div>
       </header>
@@ -222,7 +226,7 @@ function Index() {
           <div id="enquire" className="scroll-mt-24 rounded-2xl border border-border bg-card p-6 shadow-xl">
             <p className="font-script text-2xl text-brand-green">Start the conversation</p>
             <p className="mb-4 font-serif text-xl font-semibold">Enquire or book a campus tour</p>
-            <LeadForm kind="enquiry" cta="Request a Callback" />
+            <LeadForm kind="enquiry" cta="Request a Callback" section="Home Hero" />
           </div>
         </div>
       </section>
@@ -355,7 +359,7 @@ function Index() {
             <span className="inline-block rounded-md bg-primary px-3 py-1 font-serif text-sm text-primary-foreground">Built Today. For What Comes Next.</span>
             <h3 className="mt-3 text-2xl font-semibold">Book a Campus Visit</h3>
             <p className="mb-4 text-sm text-muted-foreground">Walk the campus, meet our educators and ask anything.</p>
-            <LeadForm kind="visit" cta="Book My Visit" wide />
+            <LeadForm kind="visit" cta="Book My Visit" wide section="Campus Visit" />
           </div>
         </div>
         <p className="mx-auto mt-12 max-w-6xl px-5 text-xs text-background/50">© Ekaaya International School, Vadodara</p>
@@ -365,8 +369,21 @@ function Index() {
       <div className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-3 border-t border-border bg-background text-sm font-semibold sm:hidden">
         <a href={TEL} className="py-3.5 text-center">Call</a>
         <a href={WA} target="_blank" rel="noreferrer" className="border-x border-border py-3.5 text-center text-brand-green">WhatsApp</a>
-        <a href="#enquire" className="bg-primary py-3.5 text-center text-primary-foreground">Enquire</a>
+        <button type="button" onClick={() => setEnquireOpen(true)} className="bg-primary py-3.5 text-center text-primary-foreground">Enquire</button>
       </div>
+
+      <Dialog open={enquireOpen} onOpenChange={setEnquireOpen}>
+        <DialogContent className="max-h-[min(90vh,40rem)] overflow-y-auto rounded-2xl border-border bg-card p-6 shadow-xl sm:max-w-md">
+          <DialogHeader className="space-y-1 pr-6 text-left">
+            <p className="font-script text-2xl text-brand-green">Start the conversation</p>
+            <DialogTitle className="font-serif text-xl font-semibold">Enquire or book a campus tour</DialogTitle>
+            <DialogDescription className="sr-only">
+              Parent name, mobile number, and the class you are enquiring for.
+            </DialogDescription>
+          </DialogHeader>
+          <LeadForm kind="enquiry" cta="Request a Callback" section="Enquire Now" />
+        </DialogContent>
+      </Dialog>
     </main>
   );
 }
