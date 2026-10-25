@@ -231,8 +231,9 @@ export function AdmissionsChat({
   grades?: readonly { value: string; label: string }[];
   gradeLabel?: string;
 }) {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const idRef = useRef(1);
+  const greeted = useRef(false);
   const busy = useRef(false);
   const timers = useRef<number[]>([]);
   const scrollerRef = useRef<HTMLDivElement>(null);
@@ -277,12 +278,14 @@ export function AdmissionsChat({
   }
 
   useEffect(() => {
+    if (!open || greeted.current) return;
     let cancelled = false;
     busy.current = true;
     const opening = openingTranscript(prefill);
     const botLines = opening.lines.filter((line) => line.role === "bot");
     const replyTimer = window.setTimeout(() => {
       if (cancelled) return;
+      greeted.current = true;
       setMessages((current) => [...current, ...botLines.map((line) => toMessage(line, idRef.current++))]);
       setStepId(opening.stepId);
       setTyping(false);
@@ -295,10 +298,11 @@ export function AdmissionsChat({
     }, TYPING_MS);
     timers.current.push(replyTimer);
     return () => {
+      if (greeted.current) return;
       cancelled = true;
       window.clearTimeout(replyTimer);
     };
-  }, [prefill]);
+  }, [open, prefill]);
 
   useEffect(() => () => {
     timers.current.forEach((id) => window.clearTimeout(id));
