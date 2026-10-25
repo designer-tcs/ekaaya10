@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import type { ReactNode } from "react";
 import compassionateSrc from "@/assets/early-years/early-years-hero.jpg";
 const compassionate = { url: compassionateSrc };
 import artsSrc from "@/assets/early-years/early-years-play-based-inquiry.jpg";
@@ -49,7 +50,7 @@ const PILLARS = [
   { img: sports.url, t: "Attentive Care, Every Day", d: "Dedicated caretakers ensure children feel safe, comfortable and cared for throughout the day." },
 ];
 
-function EarlyYears() {
+export function EarlyYearsPage({ children }: { children?: ReactNode }) {
   return (
     <main className="overflow-x-hidden bg-background pb-14 text-foreground sm:pb-0">
       <SiteHeader cta="Book a Session" />
@@ -108,6 +109,11 @@ function EarlyYears() {
       </section>
       <SiteFooter />
       <MobileBar label="Book" />
+      {children}
     </main>
   );
+}
+
+function EarlyYears() {
+  return <EarlyYearsPage />;
 }

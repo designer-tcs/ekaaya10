@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState, type FormEvent } from "react";
+import { useState, type FormEvent, type ReactNode } from "react";
 import { useLeadSubmit } from "@/components/ekaaya";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { ADMISSION_CLASSES } from "@/lib/simply-admission";
@@ -174,7 +174,7 @@ const VOICES = [
   { pill: "Sports coordinator", who: "From the Sports Coordinator", name: "Sports coordinator", img: voiceSports, quote: "Believe in yourself, embrace challenges, and always give your best! Sports build character, discipline, and teamwork while helping you discover your inner strength. Remember, every champion starts with the courage to try!", aside: "“A champion is someone who gets up when they can’t.”\n— Jack Dempsey" },
 ];
 
-function Index() {
+export function HomePage({ children }: { children?: ReactNode }) {
   const [voice, setVoice] = useState(0);
   const [enquireOpen, setEnquireOpen] = useState(false);
   const v = VOICES[voice] ?? VOICES[0]!;
@@ -384,6 +384,11 @@ function Index() {
           <LeadForm kind="enquiry" cta="Request a Callback" section="Enquire Now" />
         </DialogContent>
       </Dialog>
+      {children}
     </main>
   );
+}
+
+function Index() {
+  return <HomePage />;
 }

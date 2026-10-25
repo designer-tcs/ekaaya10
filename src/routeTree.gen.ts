@@ -10,13 +10,21 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdmissionsRouteImport } from './routes/admissions'
 import { Route as EarlyYearsRouteImport } from './routes/early-years'
 import { Route as ThankYouRouteImport } from './routes/thank-you'
 import { Route as TourRouteImport } from './routes/tour'
+import { Route as AdmissionsIndexRouteImport } from './routes/admissions.index'
+import { Route as AdmissionsEarlyYearsRouteImport } from './routes/admissions.early-years'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdmissionsRoute = AdmissionsRouteImport.update({
+  id: '/admissions',
+  path: '/admissions',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EarlyYearsRoute = EarlyYearsRouteImport.update({
@@ -34,36 +42,76 @@ const TourRoute = TourRouteImport.update({
   path: '/tour',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdmissionsIndexRoute = AdmissionsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdmissionsRoute,
+} as any)
+const AdmissionsEarlyYearsRoute = AdmissionsEarlyYearsRouteImport.update({
+  id: '/early-years',
+  path: '/early-years',
+  getParentRoute: () => AdmissionsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admissions': typeof AdmissionsRouteWithChildren
   '/early-years': typeof EarlyYearsRoute
   '/thank-you': typeof ThankYouRoute
   '/tour': typeof TourRoute
+  '/admissions/early-years': typeof AdmissionsEarlyYearsRoute
+  '/admissions/': typeof AdmissionsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/early-years': typeof EarlyYearsRoute
   '/thank-you': typeof ThankYouRoute
   '/tour': typeof TourRoute
+  '/admissions/early-years': typeof AdmissionsEarlyYearsRoute
+  '/admissions': typeof AdmissionsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admissions': typeof AdmissionsRouteWithChildren
   '/early-years': typeof EarlyYearsRoute
   '/thank-you': typeof ThankYouRoute
   '/tour': typeof TourRoute
+  '/admissions/early-years': typeof AdmissionsEarlyYearsRoute
+  '/admissions/': typeof AdmissionsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/early-years' | '/thank-you' | '/tour'
+  fullPaths:
+    | '/'
+    | '/admissions'
+    | '/early-years'
+    | '/thank-you'
+    | '/tour'
+    | '/admissions/early-years'
+    | '/admissions/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/early-years' | '/thank-you' | '/tour'
-  id: '__root__' | '/' | '/early-years' | '/thank-you' | '/tour'
+  to:
+    | '/'
+    | '/early-years'
+    | '/thank-you'
+    | '/tour'
+    | '/admissions/early-years'
+    | '/admissions'
+  id:
+    | '__root__'
+    | '/'
+    | '/admissions'
+    | '/early-years'
+    | '/thank-you'
+    | '/tour'
+    | '/admissions/early-years'
+    | '/admissions/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdmissionsRoute: typeof AdmissionsRouteWithChildren
   EarlyYearsRoute: typeof EarlyYearsRoute
   ThankYouRoute: typeof ThankYouRoute
   TourRoute: typeof TourRoute
@@ -76,6 +124,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admissions': {
+      id: '/admissions'
+      path: '/admissions'
+      fullPath: '/admissions'
+      preLoaderRoute: typeof AdmissionsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/early-years': {
@@ -99,11 +154,40 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TourRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admissions/': {
+      id: '/admissions/'
+      path: '/'
+      fullPath: '/admissions/'
+      preLoaderRoute: typeof AdmissionsIndexRouteImport
+      parentRoute: typeof AdmissionsRoute
+    }
+    '/admissions/early-years': {
+      id: '/admissions/early-years'
+      path: '/early-years'
+      fullPath: '/admissions/early-years'
+      preLoaderRoute: typeof AdmissionsEarlyYearsRouteImport
+      parentRoute: typeof AdmissionsRoute
+    }
   }
 }
 
+interface AdmissionsRouteChildren {
+  AdmissionsEarlyYearsRoute: typeof AdmissionsEarlyYearsRoute
+  AdmissionsIndexRoute: typeof AdmissionsIndexRoute
+}
+
+const AdmissionsRouteChildren: AdmissionsRouteChildren = {
+  AdmissionsEarlyYearsRoute: AdmissionsEarlyYearsRoute,
+  AdmissionsIndexRoute: AdmissionsIndexRoute,
+}
+
+const AdmissionsRouteWithChildren = AdmissionsRoute._addFileChildren(
+  AdmissionsRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdmissionsRoute: AdmissionsRouteWithChildren,
   EarlyYearsRoute: EarlyYearsRoute,
   ThankYouRoute: ThankYouRoute,
   TourRoute: TourRoute,

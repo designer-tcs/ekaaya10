@@ -14,4 +14,20 @@ describe("App routing", () => {
 
     expect(matches.at(-1)?.routeId).not.toBe(rootRouteId);
   });
+
+  it("matches the admissions chat page", () => {
+    const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
+
+    const matches = router.matchRoutes("/admissions");
+
+    expect(matches.at(-1)?.routeId).toBe("/admissions/");
+  });
+
+  it("matches the early years admissions chat page", () => {
+    const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
+
+    const matches = router.matchRoutes("/admissions/early-years");
+
+    expect(matches.at(-1)?.routeId).toBe("/admissions/early-years");
+  });
 });
