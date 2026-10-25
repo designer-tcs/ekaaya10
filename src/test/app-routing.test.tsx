@@ -23,6 +23,14 @@ describe("App routing", () => {
     expect(matches.at(-1)?.routeId).toBe("/admissions/");
   });
 
+  it("matches the campus tour admissions chat page", () => {
+    const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
+
+    const matches = router.matchRoutes("/admissions/tour");
+
+    expect(matches.at(-1)?.routeId).toBe("/admissions/tour");
+  });
+
   it("matches the early years admissions chat page", () => {
     const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
 

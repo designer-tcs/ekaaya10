@@ -16,6 +16,7 @@ import { Route as ThankYouRouteImport } from './routes/thank-you'
 import { Route as TourRouteImport } from './routes/tour'
 import { Route as AdmissionsIndexRouteImport } from './routes/admissions.index'
 import { Route as AdmissionsEarlyYearsRouteImport } from './routes/admissions.early-years'
+import { Route as AdmissionsTourRouteImport } from './routes/admissions.tour'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -52,6 +53,11 @@ const AdmissionsEarlyYearsRoute = AdmissionsEarlyYearsRouteImport.update({
   path: '/early-years',
   getParentRoute: () => AdmissionsRoute,
 } as any)
+const AdmissionsTourRoute = AdmissionsTourRouteImport.update({
+  id: '/tour',
+  path: '/tour',
+  getParentRoute: () => AdmissionsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -60,6 +66,7 @@ export interface FileRoutesByFullPath {
   '/thank-you': typeof ThankYouRoute
   '/tour': typeof TourRoute
   '/admissions/early-years': typeof AdmissionsEarlyYearsRoute
+  '/admissions/tour': typeof AdmissionsTourRoute
   '/admissions/': typeof AdmissionsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -68,6 +75,7 @@ export interface FileRoutesByTo {
   '/thank-you': typeof ThankYouRoute
   '/tour': typeof TourRoute
   '/admissions/early-years': typeof AdmissionsEarlyYearsRoute
+  '/admissions/tour': typeof AdmissionsTourRoute
   '/admissions': typeof AdmissionsIndexRoute
 }
 export interface FileRoutesById {
@@ -78,6 +86,7 @@ export interface FileRoutesById {
   '/thank-you': typeof ThankYouRoute
   '/tour': typeof TourRoute
   '/admissions/early-years': typeof AdmissionsEarlyYearsRoute
+  '/admissions/tour': typeof AdmissionsTourRoute
   '/admissions/': typeof AdmissionsIndexRoute
 }
 export interface FileRouteTypes {
@@ -89,6 +98,7 @@ export interface FileRouteTypes {
     | '/thank-you'
     | '/tour'
     | '/admissions/early-years'
+    | '/admissions/tour'
     | '/admissions/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -97,6 +107,7 @@ export interface FileRouteTypes {
     | '/thank-you'
     | '/tour'
     | '/admissions/early-years'
+    | '/admissions/tour'
     | '/admissions'
   id:
     | '__root__'
@@ -106,6 +117,7 @@ export interface FileRouteTypes {
     | '/thank-you'
     | '/tour'
     | '/admissions/early-years'
+    | '/admissions/tour'
     | '/admissions/'
   fileRoutesById: FileRoutesById
 }
@@ -168,16 +180,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdmissionsEarlyYearsRouteImport
       parentRoute: typeof AdmissionsRoute
     }
+    '/admissions/tour': {
+      id: '/admissions/tour'
+      path: '/tour'
+      fullPath: '/admissions/tour'
+      preLoaderRoute: typeof AdmissionsTourRouteImport
+      parentRoute: typeof AdmissionsRoute
+    }
   }
 }
 
 interface AdmissionsRouteChildren {
   AdmissionsEarlyYearsRoute: typeof AdmissionsEarlyYearsRoute
+  AdmissionsTourRoute: typeof AdmissionsTourRoute
   AdmissionsIndexRoute: typeof AdmissionsIndexRoute
 }
 
 const AdmissionsRouteChildren: AdmissionsRouteChildren = {
   AdmissionsEarlyYearsRoute: AdmissionsEarlyYearsRoute,
+  AdmissionsTourRoute: AdmissionsTourRoute,
   AdmissionsIndexRoute: AdmissionsIndexRoute,
 }
 

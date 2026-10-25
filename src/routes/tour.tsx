@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import heroSrc from "@/assets/hero-clean.jpg";
 const hero = { url: heroSrc };
 import competentSrc from "@/assets/tour/tour-open-learning-courtyards.jpg";
@@ -24,7 +24,7 @@ export const Route = createFileRoute("/tour")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: TourPage,
+  component: Tour,
 });
 
 const SLOTS = ["9:30 – 10:30 AM", "11:00 AM – 12:00 PM", "3:00 – 4:00 PM"];
@@ -83,7 +83,7 @@ const HIGHLIGHTS = [
   { img: conscious.url, t: "Meet the Core Team", d: "Get to know the people who bring Ekaaya's vision to life and understand their approach to education." },
 ];
 
-function TourPage() {
+export function TourPage({ children }: { children?: ReactNode }) {
   return (
     <main className="overflow-x-hidden bg-background pb-14 text-foreground sm:pb-0">
       <SiteHeader cta="Book a Tour" />
@@ -181,6 +181,11 @@ function TourPage() {
       </section>
       <SiteFooter />
       <MobileBar label="Book Tour" />
+      {children}
     </main>
   );
+}
+
+function Tour() {
+  return <TourPage />;
 }
