@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { DEFAULT_PREFILL, PREFILL_PROMPTS, STEPS, chatLeadNote, choicesFor, openingTranscript, resolveIncoming } from "@/lib/chat-flow";
+import { PREFILL_PROMPTS, STEPS, chatLeadNote, choicesFor, openingTranscript, resolveIncoming } from "@/lib/chat-flow";
 
 describe("admissions chatbot flow", () => {
   it("opens with the welcome message and the four main options", () => {
@@ -18,8 +18,7 @@ describe("admissions chatbot flow", () => {
     ]);
   });
 
-  it("treats the ad prefills as the welcome flow", () => {
-    expect(DEFAULT_PREFILL).toBe("I want to know more.");
+  it("opens the welcome flow when those phrases are typed", () => {
     for (const prompt of PREFILL_PROMPTS) {
       expect(resolveIncoming(prompt)).toBe("welcome");
       const opening = openingTranscript(prompt);

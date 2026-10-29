@@ -27,7 +27,7 @@ const TRACKING_KEYS = [
   "UTM_AgeGroup",
 ] as const;
 
-export type ChatSearch = { prefill?: string } & Partial<Record<(typeof TRACKING_KEYS)[number], string>>;
+export type ChatSearch = Partial<Record<(typeof TRACKING_KEYS)[number], string>>;
 
 function keep(search: Record<string, unknown>, key: string, max: number): string | undefined {
   const value = search[key];
@@ -39,8 +39,6 @@ function keep(search: Record<string, unknown>, key: string, max: number): string
 
 export function admissionsSearch(search: Record<string, unknown>): ChatSearch {
   const out: ChatSearch = {};
-  const prefill = keep(search, "prefill", 300);
-  if (prefill) out.prefill = prefill;
   for (const key of TRACKING_KEYS) {
     const value = keep(search, key, key === "gclid" || key === "GCLID" ? 500 : 200);
     if (value) out[key] = value;

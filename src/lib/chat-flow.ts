@@ -7,9 +7,6 @@ export const PREFILL_PROMPTS = [
   "Admission details please!",
 ] as const;
 
-/** Shown as the visitor's first message when an ad does not pass its own prefill. */
-export const DEFAULT_PREFILL = "I want to know more.";
-
 export type StepId =
   | "welcome"
   | "different"
@@ -340,7 +337,7 @@ export type TranscriptLine = {
   stepId?: StepId;
 };
 
-/** First screen of the chat. "I want to know more." and the other ad prefills open the welcome flow. */
+/** First screen of the chat. The bot speaks first. Typed phrases such as "I want to know more." still open the welcome flow. */
 export function openingTranscript(prefill?: string): { lines: TranscriptLine[]; stepId: StepId } {
   const welcome: TranscriptLine = { role: "bot", text: STEPS.welcome.text, stepId: "welcome" };
   const text = prefill?.trim().slice(0, 300);

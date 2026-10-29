@@ -3,7 +3,6 @@ import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "rea
 import { EMAIL, MAP, PHONE, TEL } from "@/components/ekaaya";
 import { supabase } from "@/integrations/supabase/client";
 import {
-  DEFAULT_PREFILL,
   STEPS,
   VISIT_SLOTS,
   chatLeadNote,
@@ -224,27 +223,20 @@ const TYPING_MS = 850;
 const OPTIONS_MS = 420;
 
 export function AdmissionsChat({
-  prefill,
   grades = ADMISSION_GRADE_CHOICES,
   gradeLabel = "Admission for",
 }: {
-  prefill?: string | undefined;
   grades?: readonly { value: string; label: string }[];
   gradeLabel?: string;
 }) {
-  const openingPrefill = prefill?.trim() || DEFAULT_PREFILL;
   const [open, setOpen] = useState(false);
   const idRef = useRef(1);
   const greeted = useRef(false);
   const busy = useRef(false);
   const timers = useRef<number[]>([]);
   const scrollerRef = useRef<HTMLDivElement>(null);
-  const [messages, setMessages] = useState<ChatMessage[]>(() =>
-    openingTranscript(openingPrefill)
-      .lines.filter((line) => line.role === "user")
-      .map((line) => toMessage(line, idRef.current++)),
-  );
-  const [stepId, setStepId] = useState<StepId>(() => openingTranscript(openingPrefill).stepId);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [stepId, setStepId] = useState<StepId>("welcome");
   const [typing, setTyping] = useState(true);
   const [optionsReady, setOptionsReady] = useState(false);
   const [visited, setVisited] = useState<StepId[]>([]);
@@ -283,7 +275,7 @@ export function AdmissionsChat({
     if (!open || greeted.current) return;
     let cancelled = false;
     busy.current = true;
-    const opening = openingTranscript(openingPrefill);
+    const opening = openingTranscript();
     const botLines = opening.lines.filter((line) => line.role === "bot");
     const replyTimer = window.setTimeout(() => {
       if (cancelled) return;
@@ -304,7 +296,7 @@ export function AdmissionsChat({
       cancelled = true;
       window.clearTimeout(replyTimer);
     };
-  }, [open, openingPrefill]);
+  }, [open]);
 
   useEffect(() => () => {
     timers.current.forEach((id) => window.clearTimeout(id));

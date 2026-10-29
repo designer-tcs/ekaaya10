@@ -24,10 +24,9 @@ export const Route = createFileRoute("/admissions/early-years")({
 });
 
 function EarlyYearsChatPage() {
-  const { prefill } = Route.useSearch();
   return (
     <EarlyYearsPage>
-      <AdmissionsChat prefill={prefill} grades={EARLY_YEARS_CLASSES} gradeLabel="Child's class" />
+      <AdmissionsChat grades={EARLY_YEARS_CLASSES} gradeLabel="Child's class" />
     </EarlyYearsPage>
   );
 }

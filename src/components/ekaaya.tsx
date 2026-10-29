@@ -10,7 +10,7 @@ export const PHONE = "+91 88663 52292";
 export const TEL = "tel:+918866352292";
 export const EMAIL = "info@ekaaya.education";
 export const wa = (msg: string) => "https://wa.me/918866352292?text=" + encodeURIComponent(msg);
-export const WA = wa("Hi Ekaaya, I'd like to know about admissions.");
+export const WA = wa("I want to know more.");
 export const ADDRESS = "Sokhdakhurd, 30 mtr. Bill Sokhda Road, near Dadapura crossing, Vadodara";
 export const MAP =
   "https://www.google.com/maps/search/?api=1&query=" +

@@ -23,10 +23,9 @@ export const Route = createFileRoute("/admissions/")({
 });
 
 function ChatPage() {
-  const { prefill } = Route.useSearch();
   return (
     <HomePage>
-      <AdmissionsChat prefill={prefill} />
+      <AdmissionsChat />
     </HomePage>
   );
 }

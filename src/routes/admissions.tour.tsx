@@ -23,10 +23,9 @@ export const Route = createFileRoute("/admissions/tour")({
 });
 
 function TourChatPage() {
-  const { prefill } = Route.useSearch();
   return (
     <TourPage>
-      <AdmissionsChat prefill={prefill} />
+      <AdmissionsChat />
     </TourPage>
   );
 }
