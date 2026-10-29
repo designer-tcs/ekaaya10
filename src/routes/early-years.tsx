@@ -62,13 +62,13 @@ export function EarlyYearsPage({ children }: { children?: ReactNode }) {
           <div>
             <span className="inline-block rounded-md bg-brand-green px-3 py-1 font-serif text-sm text-primary-foreground">Early Years · Ages 3 to 6</span>
             <p className="mt-6 font-script text-3xl text-foreground/80">Every child grows differently.</p>
-            <h1 className="text-5xl font-bold leading-[1.05] text-brand-brown md:text-6xl">Small steps.<br />Safe hands.</h1>
+            <h1 className="text-5xl font-bold leading-[1.05] text-brand-brown md:text-6xl">A little world.<br />A lifetime of possibilities.</h1>
             <Underline className="w-56" />
             <p className="mt-5 max-w-md text-lg text-muted-foreground">From toddlers to nursery and kindergarten — we offer a world of play and imagination, where every child is free to explore and grow.</p>
           </div>
           <Card>
             <div id="book" className="scroll-mt-24" />
-            <p className="font-script text-2xl text-brand-green">For your little one's first big steps</p>
+            <p className="font-script text-2xl text-brand-green">The beginning of something wonderful.</p>
             <p className="mb-4 font-serif text-xl font-semibold">Let's Begin Their Ekaaya Journey</p>
             <EYForm />
           </Card>
