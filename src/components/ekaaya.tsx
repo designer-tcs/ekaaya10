@@ -54,9 +54,9 @@ export function SiteHeader({ cta = "Book a Tour", href = "#book" }: { cta?: stri
 export function MobileBar({ href = "#book", label = "Book" }: { href?: string; label?: string }) {
   return (
     <div className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-3 border-t border-border bg-card text-center text-sm font-semibold sm:hidden">
-      <a href={TEL} className="py-3">Call</a>
-      <a href={WA} target="_blank" rel="noreferrer" className="bg-brand-green py-3 text-primary-foreground">WhatsApp</a>
-      <a href={href} className="bg-brand-brown py-3 text-primary-foreground">{label}</a>
+      <a href={TEL} className="py-3.5">Call</a>
+      <div aria-hidden />
+      <a href={href} className="bg-brand-brown py-3.5 text-primary-foreground">{label}</a>
     </div>
   );
 }

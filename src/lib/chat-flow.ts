@@ -1,10 +1,14 @@
 /** Scripted admissions chatbot. Button labels and replies follow the Ekaaya flow. */
 
 export const PREFILL_PROMPTS = [
+  "I want to know more.",
   "Tell me more about Ekaaya.",
   "Learn more about Ekaaya.",
   "Admission details please!",
 ] as const;
+
+/** Shown as the visitor's first message when an ad does not pass its own prefill. */
+export const DEFAULT_PREFILL = "I want to know more.";
 
 export type StepId =
   | "welcome"
@@ -61,7 +65,8 @@ export function chatLeadNote(
   spec: FormSpec,
   details: { child: string; email: string; when?: string; slot?: string },
 ): string {
-  const parts = [`Enquiry: ${spec.formName}`, `Child: ${details.child}`, `Email: ${details.email}`];
+  const parts = [`Enquiry: ${spec.formName}`, `Child: ${details.child}`];
+  if (details.email) parts.push(`Email: ${details.email}`);
   if (spec.kind === "visit" && details.when && details.slot) parts.push(`Visit: ${details.when} ${details.slot}`);
   return parts.join(" · ").slice(0, 500);
 }
@@ -291,6 +296,7 @@ const EXACT: Record<string, StepId> = {
   "enquire about academics": "lead-academics",
   "discover more about ekaaya": "lead-sports",
   "book my campus visit": "visit-form",
+  "i want to know more": "welcome",
   "tell me more about ekaaya": "welcome",
   "learn more about ekaaya": "welcome",
   "admission details please": "welcome",
@@ -334,7 +340,7 @@ export type TranscriptLine = {
   stepId?: StepId;
 };
 
-/** First screen of the chat. Ad prefills such as "Tell me more about Ekaaya." open the welcome flow. */
+/** First screen of the chat. "I want to know more." and the other ad prefills open the welcome flow. */
 export function openingTranscript(prefill?: string): { lines: TranscriptLine[]; stepId: StepId } {
   const welcome: TranscriptLine = { role: "bot", text: STEPS.welcome.text, stepId: "welcome" };
   const text = prefill?.trim().slice(0, 300);

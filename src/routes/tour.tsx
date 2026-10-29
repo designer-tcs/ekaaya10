@@ -10,6 +10,7 @@ import consciousSrc from "@/assets/tour/tour-founding-educators.jpg";
 const conscious = { url: consciousSrc };
 import foundersSrc from "@/assets/tour/tour-founders.jpg";
 const founders = { url: foundersSrc };
+import { AdmissionsChat } from "@/components/admissions-chat";
 import { ADDRESS, Card, Heading, MAP, MobileBar, PHONE, SiteFooter, SiteHeader, TEL, Underline, inputCls, useLeadSubmit } from "@/components/ekaaya";
 import { ADMISSION_CLASSES } from "@/lib/simply-admission";
 
@@ -181,7 +182,11 @@ export function TourPage({ children }: { children?: ReactNode }) {
       </section>
       <SiteFooter />
       <MobileBar label="Book Tour" />
-      {children}
+      {children ?? (
+        <div className="sm:hidden">
+          <AdmissionsChat />
+        </div>
+      )}
     </main>
   );
 }

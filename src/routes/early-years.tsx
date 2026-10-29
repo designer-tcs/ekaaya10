@@ -8,6 +8,7 @@ import wellbeingSrc from "@/assets/early-years/early-years-emotional-wellbeing.j
 const wellbeing = { url: wellbeingSrc };
 import sportsSrc from "@/assets/early-years/early-years-caretaker-attention.jpg";
 const sports = { url: sportsSrc };
+import { AdmissionsChat } from "@/components/admissions-chat";
 import { Card, Heading, MobileBar, SiteFooter, SiteHeader, Underline, inputCls, useLeadSubmit } from "@/components/ekaaya";
 import { EARLY_YEARS_CLASSES } from "@/lib/simply-admission";
 
@@ -109,7 +110,11 @@ export function EarlyYearsPage({ children }: { children?: ReactNode }) {
       </section>
       <SiteFooter />
       <MobileBar label="Book" />
-      {children}
+      {children ?? (
+        <div className="sm:hidden">
+          <AdmissionsChat grades={EARLY_YEARS_CLASSES} gradeLabel="Child's class" />
+        </div>
+      )}
     </main>
   );
 }

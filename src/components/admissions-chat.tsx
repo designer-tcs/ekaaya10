@@ -3,6 +3,7 @@ import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "rea
 import { EMAIL, MAP, PHONE, TEL } from "@/components/ekaaya";
 import { supabase } from "@/integrations/supabase/client";
 import {
+  DEFAULT_PREFILL,
   STEPS,
   VISIT_SLOTS,
   chatLeadNote,
@@ -99,7 +100,7 @@ function ChatLeadForm({
 
     if (!name) return fail("Please enter the parent's full name.");
     if (child.length < 2) return fail("Please enter the child's name.");
-    if (!isEmail(email)) return fail("Please enter a valid email address.");
+    if (email && !isEmail(email)) return fail("Please enter a valid email address.");
     if (!grade) return fail("Please choose the grade seeking admission.");
     if (!phone) return fail("Please enter a 10-digit mobile number.");
     if (spec.kind === "visit" && !when) return fail("Please choose a preferred visit date.");
@@ -117,7 +118,7 @@ function ChatLeadForm({
           kind: spec.kind === "visit" ? "visit" : "enquiry",
           parent_name: name,
           phone,
-          email,
+          email: email || null,
           child_grade: grade,
           message: note,
         });
@@ -176,8 +177,8 @@ function ChatLeadForm({
         </select>
       </label>
       <label className="grid gap-1 text-xs font-medium">
-        Email Address
-        <input name="email" required type="email" maxLength={255} autoComplete="email" placeholder="Email address" className={field} />
+        Email Address <span className="font-normal text-muted-foreground">(optional)</span>
+        <input name="email" type="email" maxLength={255} autoComplete="email" placeholder="Email address (optional)" className={field} />
       </label>
       <label className="grid gap-1 text-xs font-medium">
         Mobile Number
@@ -231,6 +232,7 @@ export function AdmissionsChat({
   grades?: readonly { value: string; label: string }[];
   gradeLabel?: string;
 }) {
+  const openingPrefill = prefill?.trim() || DEFAULT_PREFILL;
   const [open, setOpen] = useState(false);
   const idRef = useRef(1);
   const greeted = useRef(false);
@@ -238,11 +240,11 @@ export function AdmissionsChat({
   const timers = useRef<number[]>([]);
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [messages, setMessages] = useState<ChatMessage[]>(() =>
-    openingTranscript(prefill)
+    openingTranscript(openingPrefill)
       .lines.filter((line) => line.role === "user")
       .map((line) => toMessage(line, idRef.current++)),
   );
-  const [stepId, setStepId] = useState<StepId>(() => openingTranscript(prefill).stepId);
+  const [stepId, setStepId] = useState<StepId>(() => openingTranscript(openingPrefill).stepId);
   const [typing, setTyping] = useState(true);
   const [optionsReady, setOptionsReady] = useState(false);
   const [visited, setVisited] = useState<StepId[]>([]);
@@ -281,7 +283,7 @@ export function AdmissionsChat({
     if (!open || greeted.current) return;
     let cancelled = false;
     busy.current = true;
-    const opening = openingTranscript(prefill);
+    const opening = openingTranscript(openingPrefill);
     const botLines = opening.lines.filter((line) => line.role === "bot");
     const replyTimer = window.setTimeout(() => {
       if (cancelled) return;
@@ -302,7 +304,7 @@ export function AdmissionsChat({
       cancelled = true;
       window.clearTimeout(replyTimer);
     };
-  }, [open, prefill]);
+  }, [open, openingPrefill]);
 
   useEffect(() => () => {
     timers.current.forEach((id) => window.clearTimeout(id));
@@ -357,6 +359,7 @@ export function AdmissionsChat({
     <>
       {open ? (
         <section
+          id="chat-widget"
           aria-label="Ekaaya admissions chat"
           className="fixed bottom-[4.25rem] left-3 right-3 top-20 z-40 flex flex-col overflow-hidden rounded-3xl border border-border bg-background shadow-2xl animate-in fade-in slide-in-from-bottom-4 sm:bottom-6 sm:left-auto sm:right-6 sm:top-auto sm:h-[min(40rem,calc(100vh-4.5rem))] sm:w-[24rem]"
         >
@@ -440,12 +443,14 @@ export function AdmissionsChat({
         </section>
       ) : (
         <button
+          id="chat-widget"
           type="button"
           onClick={() => setOpen(true)}
-          className="fixed bottom-[4.25rem] right-4 z-40 flex items-center gap-2 rounded-full bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-lg sm:bottom-6 sm:right-6"
+          className="fixed bottom-0 left-1/3 z-50 flex w-1/3 items-center justify-center gap-1.5 border-x border-background bg-primary py-3.5 text-sm font-semibold text-primary-foreground sm:bottom-6 sm:left-auto sm:right-6 sm:w-auto sm:gap-2 sm:rounded-full sm:border-0 sm:px-4 sm:py-3 sm:shadow-lg [&_svg]:pointer-events-none"
         >
           <MessageCircle className="h-5 w-5" />
-          Admissions chat
+          <span className="sm:hidden">Chat</span>
+          <span className="hidden sm:inline">Admissions chat</span>
         </button>
       )}
     </>

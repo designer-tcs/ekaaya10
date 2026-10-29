@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { PREFILL_PROMPTS, STEPS, chatLeadNote, choicesFor, openingTranscript, resolveIncoming } from "@/lib/chat-flow";
+import { DEFAULT_PREFILL, PREFILL_PROMPTS, STEPS, chatLeadNote, choicesFor, openingTranscript, resolveIncoming } from "@/lib/chat-flow";
 
 describe("admissions chatbot flow", () => {
   it("opens with the welcome message and the four main options", () => {
@@ -19,6 +19,7 @@ describe("admissions chatbot flow", () => {
   });
 
   it("treats the ad prefills as the welcome flow", () => {
+    expect(DEFAULT_PREFILL).toBe("I want to know more.");
     for (const prompt of PREFILL_PROMPTS) {
       expect(resolveIncoming(prompt)).toBe("welcome");
       const opening = openingTranscript(prompt);
@@ -69,6 +70,9 @@ describe("admissions chatbot flow", () => {
     );
     expect(visit && chatLeadNote(visit, { child: "Aarav", email: "parent@example.com", when: "Mon, 2 Nov", slot: "9:30 – 10:30 AM" })).toBe(
       "Enquiry: Book My Campus Visit · Child: Aarav · Email: parent@example.com · Visit: Mon, 2 Nov 9:30 – 10:30 AM",
+    );
+    expect(fees && chatLeadNote(fees, { child: "Aarav", email: "" })).toBe(
+      "Enquiry: Fee Details · Child: Aarav",
     );
   });
 

@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, type FormEvent, type ReactNode } from "react";
+import { AdmissionsChat } from "@/components/admissions-chat";
 import { useLeadSubmit } from "@/components/ekaaya";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { ADMISSION_CLASSES } from "@/lib/simply-admission";
@@ -368,7 +369,7 @@ export function HomePage({ children }: { children?: ReactNode }) {
       {/* 9. Mobile action bar */}
       <div className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-3 border-t border-border bg-background text-sm font-semibold sm:hidden">
         <a href={TEL} className="py-3.5 text-center">Call</a>
-        <a href={WA} target="_blank" rel="noreferrer" className="border-x border-border py-3.5 text-center text-brand-green">WhatsApp</a>
+        <div aria-hidden />
         <button type="button" onClick={() => setEnquireOpen(true)} className="bg-primary py-3.5 text-center text-primary-foreground">Enquire</button>
       </div>
 
@@ -384,7 +385,11 @@ export function HomePage({ children }: { children?: ReactNode }) {
           <LeadForm kind="enquiry" cta="Request a Callback" section="Enquire Now" />
         </DialogContent>
       </Dialog>
-      {children}
+      {children ?? (
+        <div className="sm:hidden">
+          <AdmissionsChat />
+        </div>
+      )}
     </main>
   );
 }
