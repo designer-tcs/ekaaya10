@@ -15,7 +15,15 @@ describe("App routing", () => {
     expect(matches.at(-1)?.routeId).not.toBe(rootRouteId);
   });
 
-  it("matches the admissions chat page", () => {
+  it("matches the campus visit chat page", () => {
+    const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
+
+    const matches = router.matchRoutes("/campus-vist");
+
+    expect(matches.at(-1)?.routeId).toBe("/campus-vist");
+  });
+
+  it("keeps the old admissions address so it can redirect", () => {
     const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
 
     const matches = router.matchRoutes("/admissions");

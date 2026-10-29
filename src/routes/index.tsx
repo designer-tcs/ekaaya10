@@ -60,7 +60,7 @@ export const Route = createFileRoute("/")({
 const PHONE = "+91 8866352292";
 const TEL = "tel:+918866352292";
 const EMAIL = "info@ekaaya.education";
-const WA = "https://wa.me/918866352292?text=" + encodeURIComponent("I want to know more.");
+const WA = "https://wa.me/918866352292?text=" + encodeURIComponent("Hi Ekaaya, I'd like to know about admissions.");
 const MAP = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent("Ekaaya International School, Sokhdakhurd, 30 mtr. Bill Sokhda Road, near Dadapura crossing, Vadodara");
 
 type Kind = "enquiry" | "visit";
