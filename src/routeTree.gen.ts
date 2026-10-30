@@ -18,6 +18,7 @@ import { Route as TourRouteImport } from './routes/tour'
 import { Route as AdmissionsIndexRouteImport } from './routes/admissions.index'
 import { Route as AdmissionsEarlyYearsRouteImport } from './routes/admissions.early-years'
 import { Route as AdmissionsTourRouteImport } from './routes/admissions.tour'
+import { Route as ApiGoogleAdsRouteImport } from './routes/api.google-ads'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -64,6 +65,11 @@ const AdmissionsTourRoute = AdmissionsTourRouteImport.update({
   path: '/tour',
   getParentRoute: () => AdmissionsRoute,
 } as any)
+const ApiGoogleAdsRoute = ApiGoogleAdsRouteImport.update({
+  id: '/api/google-ads',
+  path: '/api/google-ads',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -74,6 +80,7 @@ export interface FileRoutesByFullPath {
   '/tour': typeof TourRoute
   '/admissions/early-years': typeof AdmissionsEarlyYearsRoute
   '/admissions/tour': typeof AdmissionsTourRoute
+  '/api/google-ads': typeof ApiGoogleAdsRoute
   '/admissions/': typeof AdmissionsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -84,6 +91,7 @@ export interface FileRoutesByTo {
   '/tour': typeof TourRoute
   '/admissions/early-years': typeof AdmissionsEarlyYearsRoute
   '/admissions/tour': typeof AdmissionsTourRoute
+  '/api/google-ads': typeof ApiGoogleAdsRoute
   '/admissions': typeof AdmissionsIndexRoute
 }
 export interface FileRoutesById {
@@ -96,6 +104,7 @@ export interface FileRoutesById {
   '/tour': typeof TourRoute
   '/admissions/early-years': typeof AdmissionsEarlyYearsRoute
   '/admissions/tour': typeof AdmissionsTourRoute
+  '/api/google-ads': typeof ApiGoogleAdsRoute
   '/admissions/': typeof AdmissionsIndexRoute
 }
 export interface FileRouteTypes {
@@ -109,6 +118,7 @@ export interface FileRouteTypes {
     | '/tour'
     | '/admissions/early-years'
     | '/admissions/tour'
+    | '/api/google-ads'
     | '/admissions/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -119,6 +129,7 @@ export interface FileRouteTypes {
     | '/tour'
     | '/admissions/early-years'
     | '/admissions/tour'
+    | '/api/google-ads'
     | '/admissions'
   id:
     | '__root__'
@@ -130,6 +141,7 @@ export interface FileRouteTypes {
     | '/tour'
     | '/admissions/early-years'
     | '/admissions/tour'
+    | '/api/google-ads'
     | '/admissions/'
   fileRoutesById: FileRoutesById
 }
@@ -140,6 +152,7 @@ export interface RootRouteChildren {
   EarlyYearsRoute: typeof EarlyYearsRoute
   ThankYouRoute: typeof ThankYouRoute
   TourRoute: typeof TourRoute
+  ApiGoogleAdsRoute: typeof ApiGoogleAdsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -207,6 +220,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdmissionsTourRouteImport
       parentRoute: typeof AdmissionsRoute
     }
+    '/api/google-ads': {
+      id: '/api/google-ads'
+      path: '/api/google-ads'
+      fullPath: '/api/google-ads'
+      preLoaderRoute: typeof ApiGoogleAdsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -233,6 +253,7 @@ const rootRouteChildren: RootRouteChildren = {
   EarlyYearsRoute: EarlyYearsRoute,
   ThankYouRoute: ThankYouRoute,
   TourRoute: TourRoute,
+  ApiGoogleAdsRoute: ApiGoogleAdsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
